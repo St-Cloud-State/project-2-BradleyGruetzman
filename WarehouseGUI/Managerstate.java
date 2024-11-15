@@ -46,7 +46,17 @@ public class Managerstate extends WarehouseState {
         }
     });
 
+    // Become Clerk Button
+    JButton becomeClerkButton = new JButton("Become Clerk");
+    becomeClerkButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            WarehouseContext.instance().changeState(0); // ClerkState index
+        }
+    });
+
     frame.getContentPane().add(logoutButton);
+    frame.getContentPane().add(becomeClerkButton);
     frame.revalidate();
     frame.repaint();
  }

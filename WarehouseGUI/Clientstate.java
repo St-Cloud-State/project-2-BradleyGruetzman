@@ -42,7 +42,7 @@ public class Clientstate extends WarehouseState {
   logoutButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-          WarehouseContext.instance().changeState(3); // LoginState index
+          handleLogout(); // LoginState index
       }
   });
 
@@ -50,7 +50,17 @@ public class Clientstate extends WarehouseState {
   frame.revalidate();
   frame.repaint();
  }
- 
+  private void handleLogout() {
+        WarehouseContext context = WarehouseContext.instance();
+        int initialLogin = context.getLogin();
+
+        // Determine next state based on initial login
+        if (initialLogin == WarehouseContext.IsClerk || initialLogin == WarehouseContext.IsManager) {
+            context.changeState(0); // Transition back to ClerkState
+        } else {
+            context.changeState(3); // Transition back to LoginState
+        }
+  }
  
 
 

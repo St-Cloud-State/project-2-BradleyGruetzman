@@ -9,7 +9,7 @@ public class WarehouseContext {
   private static int currentState;
   private static Warehouse warehouse;
   private static WarehouseContext context;
-  private int currentClient;
+  private int currentUser;
   private String clientID;
   private static JFrame WarehouseFrame; 
   private BufferedReader reader = new BufferedReader(new 
@@ -59,13 +59,13 @@ public class WarehouseContext {
   }
 
   public void setLogin(int code)
-  {currentClient = code;}
+  {currentUser = code;}
 
   public void setClient(String cID)
   { clientID = cID;}
 
   public int getLogin()
-  { return currentClient;}
+  { return currentUser;}
 
   public String getClient()
   { return clientID;}
@@ -87,9 +87,10 @@ public class WarehouseContext {
     states[2] = Managerstate.instance();
     states[3]=  Loginstate.instance();
     nextState = new int[4][4];
-    nextState[0][0] = 2;nextState[0][1] = 1;nextState[0][2] = -2;nextState[0][3] = 3;
-    nextState[1][0] = 2;nextState[1][1] = 0;nextState[1][2] = -2;nextState[1][3] = 3;
-    nextState[2][0] = 0;nextState[2][1] = 1;nextState[3][1] = 1;nextState[2][3] = 3;
+    nextState[0][1] = 1;nextState[0][2] = 2;nextState[0][3] = 3;
+    nextState[1][3] = 3;
+    nextState[2][0] = 0;nextState[2][3] = 3;
+    nextState[3][1] = 1;nextState[3][2] = 2;nextState[3][0] = 0;nextState[3][3] = -2;
     currentState = 3;
     WarehouseFrame = new JFrame("Warehouse GUI");
 	WarehouseFrame.addWindowListener(new WindowAdapter()
@@ -110,17 +111,41 @@ public class WarehouseContext {
     states[currentState].run();
   }
 
-  private void terminate()
-  {
-   if (yesOrNo("Save data?")) {
-      if (warehouse.save()) {
-         System.out.println(" The warehouse has been successfully saved in the file WarehouseData \n" );
-       } else {
-         System.out.println(" There has been an error in saving \n" );
-       }
-     }
-   System.out.println(" Goodbye \n "); System.exit(0);
-  }
+  private void terminate() {
+    int saveOption = JOptionPane.showConfirmDialog(
+        null,
+        "Would you like to save data?",
+        "Save Confirmation",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (saveOption == JOptionPane.YES_OPTION) {
+        if (warehouse.save()) {
+            JOptionPane.showMessageDialog(
+                null,
+                "The warehouse has been successfully saved in the file WarehouseData.",
+                "Save Successful",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        } else {
+            JOptionPane.showMessageDialog(
+                null,
+                "There was an error saving the warehouse data.",
+                "Save Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    JOptionPane.showMessageDialog(
+        null,
+        "Goodbye!",
+        "Termination",
+        JOptionPane.INFORMATION_MESSAGE
+    );
+
+    System.exit(0);
+}
 
   public static WarehouseContext instance() {
     if (context == null) {

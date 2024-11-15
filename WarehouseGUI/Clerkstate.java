@@ -41,14 +41,36 @@ public class Clerkstate extends WarehouseState {
     logoutButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            WarehouseContext.instance().changeState(3); // LoginState index
+            handleLogout();
+        }
+    });
+
+    // Become Client Button
+    JButton becomeClientButton = new JButton("Become Client");
+    becomeClientButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            WarehouseContext.instance().changeState(1); // ClientState index
         }
     });
 
     frame.getContentPane().add(logoutButton);
+    frame.getContentPane().add(becomeClientButton);
     frame.revalidate();
     frame.repaint();
  }
+
+ private void handleLogout() {
+        WarehouseContext context = WarehouseContext.instance();
+        int initialLogin = context.getLogin();
+
+        // Determine next state based on initial login
+        if (initialLogin == WarehouseContext.IsManager) {
+            context.changeState(2); // Transition back to ManagerState
+        } else {
+            context.changeState(3); // Transition back to LoginState
+        }
+  }
 
 
   public String getToken(String prompt) {

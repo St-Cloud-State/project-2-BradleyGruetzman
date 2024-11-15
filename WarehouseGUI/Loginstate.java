@@ -38,7 +38,7 @@ public class Loginstate extends WarehouseState implements ActionListener{
        {//System.out.println("user \n"); 
          this.client();}
     else if (event.getSource().equals(this.logoutButton)) 
-       (WarehouseContext.instance()).changeState(2);
+       (WarehouseContext.instance()).changeState(3);
     else if (event.getSource().equals(this.clerkButton)) 
        this.clerk();
     else if (event.getSource().equals(this.managerButton))
